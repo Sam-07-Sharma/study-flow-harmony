@@ -1,14 +1,27 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import { useState } from 'react';
+import WelcomePage from '@/components/WelcomePage';
+import Dashboard from '@/components/Dashboard';
 
 const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState<{ name: string; email: string } | null>(null);
+
+  const handleLogin = (userData: { name: string; email: string }) => {
+    setUser(userData);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setUser(null);
+    setIsLoggedIn(false);
+  };
+
+  if (!isLoggedIn) {
+    return <WelcomePage onLogin={handleLogin} />;
+  }
+
+  return <Dashboard user={user} onLogout={handleLogout} />;
 };
 
 export default Index;
